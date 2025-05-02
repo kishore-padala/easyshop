@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class CxpCatalogDomainApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CxpCatalogDomainApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(CxpCatalogDomainApplication.class, args);
+    }
 }
