@@ -3,11 +3,11 @@ name: Catalog Domain
 on:
   push:
     paths:
-      - cxp-catalog-domain/**
-    branches:
-      - '**'
+      - ./cxp-catalog-domain/**
+    branches: [ "main" ]
+#      - '**'
   pull_request:
-    branches: [main]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Java 17
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
