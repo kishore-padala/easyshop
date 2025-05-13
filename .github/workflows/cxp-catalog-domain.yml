@@ -1,4 +1,4 @@
-name: Catalog Domain
+name: cxp-catalog-domain
 
 on:
   push:
