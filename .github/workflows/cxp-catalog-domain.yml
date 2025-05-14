@@ -2,6 +2,8 @@ name: cxp-catalog-domain
 
 on:
   push:
+    paths:
+      - '.cxp-catalog-domain/**'
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
