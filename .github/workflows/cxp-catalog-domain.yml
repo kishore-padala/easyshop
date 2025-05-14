@@ -41,7 +41,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker Image with Debug Logs
-        run: ./mvnw spring-boot:build-image -DskipTests -X
+        run: ./mvnw spring-boot:build-image -DskipTests
 
       - name: Verify Docker Image
         run: docker images | grep $DOCKER_IMAGE_NAME
@@ -49,5 +49,6 @@ jobs:
       - name: Push Docker Image
         run: |
           echo "Pushing the image $DOCKER_IMAGE_NAME to Docker Hub..."
-          docker push $DOCKER_IMAGE_NAME || echo "Docker push failed. Verify that the image exists locally and the name is correct."
+          docker push name:latest
+          docker push --all-tags $DOCKER_IMAGE_NAME || echo "Docker push failed. Verify that the image exists locally and the name is correct."
           
