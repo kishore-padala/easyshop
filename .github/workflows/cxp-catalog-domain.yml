@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       working-directory: ./cxp-catalog-domain
-      DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/cxp-catalog-domain
+      DOCKER_IMAGE_NAME: cxp-catalog-domain
     defaults:
       run:
         working-directory: ${{ env.working-directory }}
