@@ -49,6 +49,6 @@ jobs:
       - name: Push Docker Image
         run: |
           echo "Pushing the image $DOCKER_IMAGE_NAME to Docker Hub..."
-          docker push name:latest
+          docker push cxp-catalog-domain:latest
           docker push --all-tags $DOCKER_IMAGE_NAME || echo "Docker push failed. Verify that the image exists locally and the name is correct."
           
