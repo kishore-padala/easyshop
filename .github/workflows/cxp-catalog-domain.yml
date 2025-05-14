@@ -49,7 +49,7 @@ jobs:
       - name: Push Docker Image
         run: |
           echo "Pushing the image $DOCKER_IMAGE_NAME to Docker Hub..."
-          docker build -t kishore465/cxp-catalog-domain:latest -f "deployment/docker-compose/infra.yml" .
+          docker build -t kishore465/cxp-catalog-domain:latest -f "./deployment/docker-compose/infra.yml" .
           docker push cxp-catalog-domain:latest || echo "Docker push failed. Verify that the image exists locally and the name is correct."
 #          docker push --all-tags $DOCKER_IMAGE_NAME || echo "Docker push failed. Verify that the image exists locally and the name is correct."
           
