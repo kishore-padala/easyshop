@@ -1,8 +1,8 @@
 package com.es.cxp.domainservices.catalog.exception;
 
-public class ProductNotFoundException {
-    public ProductNotFoundException(String message) {
-        super();
+public class ProductNotFoundException extends RuntimeException {
+    private ProductNotFoundException(String message) {
+        super(message);
     }
 
     public static ProductNotFoundException forCode(String code) {

@@ -1,5 +1,6 @@
 package com.es.cxp.domainservices.catalog.web;
 
+import com.es.cxp.domainservices.catalog.exception.ProductNotFoundException;
 import com.es.cxp.domainservices.catalog.model.PagedResult;
 import com.es.cxp.domainservices.catalog.model.Product;
 import com.es.cxp.domainservices.catalog.service.ProductService;
@@ -27,6 +28,9 @@ class ProductController {
     @GetMapping("/{code}")
     ResponseEntity<Product> getProductByCode(@PathVariable String code) {
         log.info("Fetching product for code: {}", code);
-        return productService.getProductByCode(code).map(ResponseEntity::ok).orElseThrow();
+        return productService
+                .getProductByCode(code)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> ProductNotFoundException.forCode(code));
     }
 }

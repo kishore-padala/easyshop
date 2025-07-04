@@ -1,10 +1,12 @@
-package com.es.cxp.domainservices.cxp_catalog_domain;
+package com.es.cxp.domainservices.catalog;
 
-import com.es.cxp.domainservices.catalog.CxpCatalogDomainApplication;
+import org.junit.runner.RunWith;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-@SpringBootApplication
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class TestCxpCatalogDomainApplication {
 
     public static void main(String[] args) {
