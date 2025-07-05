@@ -1,9 +1,9 @@
-name: cxp-catalog-domain
+name: cxp-ordermanagement-domain
 
 on:
   push:
-#    paths:
-#      - './cxp-catalog-domain/**'
+    #    paths:
+    #      - './cxp-catalog-domain/**'
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
@@ -13,8 +13,8 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     env:
-      working-directory: ./cxp-catalog-domain
-      DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/cxp-catalog-domain
+      working-directory: ./cxp-ordermanagement-domain
+      DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/cxp-ordermanagement-domain
     defaults:
       run:
         working-directory: ${{ env.working-directory }}
@@ -32,7 +32,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-            images: ${{ vars.DOCKER_USERNAME }}/cxp-catalog-domain
+          images: ${{ vars.DOCKER_USERNAME }}/cxp-ordermanagement-domain
       - name: Make Maven wrapper executable
         run: chmod +x mvnw
 
@@ -52,16 +52,3 @@ jobs:
           ./mvnw spring-boot:build-image -DskipTests
           echo "Pushing the image $DOCKER_IMAGE_NAME to Docker Hub..."
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/easyshop-cxp-catalog-domain
-
-
-#      - name: Verify Docker Image
-#        run: docker images | grep $DOCKER_IMAGE_NAME
-#
-#      - name: Push Docker Image
-#        run: |
-#          echo "Pushing the image $DOCKER_IMAGE_NAME to Docker Hub..."
-##          docker build -t kishore465/cxp-catalog-domain:latest -f "./deployment/docker-compose/infra.yml" .
-##          docker push cxp-catalog-domain:latest || echo "Docker push failed. Verify that the image exists locally and the name is correct."
-##          docker push --all-tags $DOCKER_IMAGE_NAME || echo "Docker push failed. Verify that the image exists locally and the name is correct."
-#           docker push ${{ steps.meta.outputs.tags }}
-#
