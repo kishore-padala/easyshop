@@ -40,7 +40,7 @@ services:
 
   easyshop-rabbitmq:
     image: rabbitmq:3.12.11-management
-    container_name: bookstore-rabbitmq
+    container_name: easyshop-rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest

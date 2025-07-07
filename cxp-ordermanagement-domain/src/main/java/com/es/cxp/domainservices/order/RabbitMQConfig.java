@@ -6,68 +6,66 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration()
+import java.util.Arrays;
+
+@Configuration
+@Component
 public class RabbitMQConfig {
     private final ApplicationProperties properties;
 
-    public RabbitMQConfig(ApplicationProperties properties) {
+    public RabbitMQConfig(ApplicationProperties properties, ConfigurableApplicationContext context) {
         this.properties = properties;
+        this.printBeanNames(context);
     }
 
     @Bean
-    DirectExchange exchange(){
+    DirectExchange exchange() {
         return new DirectExchange(properties.orderEventsExchange());
     }
 
     @Bean
-    Queue newOrdersQueue(){
+    Queue newOrdersQueue() {
         return QueueBuilder.durable(properties.newOrdersQueue()).build();
     }
 
     @Bean
-    Binding newOrdersQueueBinding(){
-        return BindingBuilder.bind(newOrdersQueue())
-                .to(exchange())
-                .with(properties.newOrdersQueue());
+    Binding newOrdersQueueBinding() {
+        return BindingBuilder.bind(newOrdersQueue()).to(exchange()).with(properties.newOrdersQueue());
     }
 
     @Bean
-    Queue deliveredOrdersQueue(){
+    Queue deliveredOrdersQueue() {
         return QueueBuilder.durable(properties.deliveredOrdersQueue()).build();
     }
 
     @Bean
-    Binding deliveredOrdersQueueBinding(){
-        return BindingBuilder.bind(deliveredOrdersQueue())
-                .to(exchange())
-                .with(properties.deliveredOrdersQueue());
+    Binding deliveredOrdersQueueBinding() {
+        return BindingBuilder.bind(deliveredOrdersQueue()).to(exchange()).with(properties.deliveredOrdersQueue());
     }
 
     @Bean
-    Queue cancelledOrdersQueue(){
+    Queue cancelledOrdersQueue() {
         return QueueBuilder.durable(properties.cancelledOrdersQueue()).build();
     }
 
     @Bean
-    Binding cancelledOrdersQueueBinding(){
-        return BindingBuilder.bind(cancelledOrdersQueue())
-                .to(exchange())
-                .with(properties.cancelledOrdersQueue());
+    Binding cancelledOrdersQueueBinding() {
+        return BindingBuilder.bind(cancelledOrdersQueue()).to(exchange()).with(properties.cancelledOrdersQueue());
     }
 
     @Bean
-    Queue errorOrdersQueue(){
+    Queue errorOrdersQueue() {
         return QueueBuilder.durable(properties.errorOrdersQueue()).build();
     }
 
     @Bean
-    Binding errorOrdersQueueBinding(){
-        return BindingBuilder.bind(errorOrdersQueue())
-                .to(exchange())
-                .with(properties.errorOrdersQueue());
+    Binding errorOrdersQueueBinding() {
+        return BindingBuilder.bind(errorOrdersQueue()).to(exchange()).with(properties.errorOrdersQueue());
     }
 
     @Bean
@@ -76,9 +74,19 @@ public class RabbitMQConfig {
         rabbitTemplate.setMessageConverter(jacksonConverter(objectMapper));
         return rabbitTemplate;
     }
+
     @Bean
     public MessageConverter jacksonConverter(ObjectMapper objectMapper) {
         return new Jackson2JsonMessageConverter(objectMapper);
     }
 
+    private void printBeanNames(ConfigurableApplicationContext ctx) {
+        String[] beanNames = ctx.getBeanDefinitionNames();
+        Arrays.sort(beanNames);
+        System.out.println("===============================================");
+        for (String beanName : beanNames) {
+//            System.out.println(beanName);
+        }
+        System.out.println("===============================================");
+    }
 }
