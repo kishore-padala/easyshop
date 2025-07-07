@@ -1,9 +1,9 @@
-package com.es.cxp.domainservices.order.catalog.web;
+package com.es.cxp.domainservices.catalog.web;
 
-import com.es.cxp.domainservices.order.catalog.exception.ProductNotFoundException;
-import com.es.cxp.domainservices.order.catalog.model.PagedResult;
-import com.es.cxp.domainservices.order.catalog.model.Product;
-import com.es.cxp.domainservices.order.catalog.service.ProductService;
+import com.es.cxp.domainservices.catalog.exception.ProductNotFoundException;
+import com.es.cxp.domainservices.catalog.model.PagedResult;
+import com.es.cxp.domainservices.catalog.model.Product;
+import com.es.cxp.domainservices.catalog.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

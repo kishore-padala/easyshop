@@ -1,6 +1,6 @@
-package com.es.cxp.domainservices.order.catalog.dao;
+package com.es.cxp.domainservices.catalog.dao;
 
-import com.es.cxp.domainservices.order.catalog.model.ProductEntity;
+import com.es.cxp.domainservices.catalog.model.ProductEntity;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

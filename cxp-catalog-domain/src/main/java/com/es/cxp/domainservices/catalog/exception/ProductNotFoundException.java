@@ -1,4 +1,4 @@
-package com.es.cxp.domainservices.order.catalog.exception;
+package com.es.cxp.domainservices.catalog.exception;
 
 public class ProductNotFoundException extends RuntimeException {
     private ProductNotFoundException(String message) {

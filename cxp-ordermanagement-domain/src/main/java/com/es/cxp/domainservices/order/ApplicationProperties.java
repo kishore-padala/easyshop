@@ -1,6 +1,5 @@
 package com.es.cxp.domainservices.order;
 
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -11,5 +10,4 @@ public record ApplicationProperties(
         String newOrdersQueue,
         String deliveredOrdersQueue,
         String cancelledOrdersQueue,
-        String errorOrdersQueue
-) {}
+        String errorOrdersQueue) {}

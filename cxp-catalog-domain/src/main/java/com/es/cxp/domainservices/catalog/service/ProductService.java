@@ -1,6 +1,10 @@
-package com.es.cxp.domainservices.catalo.service;
+package com.es.cxp.domainservices.catalog.service;
 
-
+import com.es.cxp.domainservices.catalog.ApplicationProperties;
+import com.es.cxp.domainservices.catalog.dao.ProductRepository;
+import com.es.cxp.domainservices.catalog.model.PagedResult;
+import com.es.cxp.domainservices.catalog.model.Product;
+import com.es.cxp.domainservices.catalog.model.ProductMapper;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
 import org.springframework.data.domain.Page;

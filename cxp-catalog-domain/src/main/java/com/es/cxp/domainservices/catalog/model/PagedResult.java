@@ -1,4 +1,4 @@
-package com.es.cxp.domainservices.order.catalog.model;
+package com.es.cxp.domainservices.catalog.model;
 
 import java.util.List;
 
