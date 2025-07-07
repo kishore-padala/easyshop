@@ -1,4 +1,4 @@
-package com.es.cxp.domainservices.catalog.exception;
+package com.es.cxp.domainservices.order.catalog.exception;
 
 import java.net.URI;
 import java.time.Instant;

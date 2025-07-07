@@ -1,4 +1,4 @@
-package com.es.cxp.domainservices.cxp_ordermanagement_domain;
+package com.es.cxp.domainservices.order;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

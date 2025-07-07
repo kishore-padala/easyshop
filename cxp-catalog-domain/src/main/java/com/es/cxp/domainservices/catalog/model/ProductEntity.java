@@ -1,4 +1,4 @@
-package com.es.cxp.domainservices.catalog.model;
+package com.es.cxp.domainservices.order.catalog.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;

@@ -38,7 +38,7 @@ services:
         limits:
           memory: 500m
 
-  bookstore-rabbitmq:
+  easyshop-rabbitmq:
     image: rabbitmq:3.12.11-management
     container_name: bookstore-rabbitmq
     environment:
