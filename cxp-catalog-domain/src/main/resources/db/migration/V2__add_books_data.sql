@@ -1,18 +1,3 @@
-DROP TABLE IF EXISTS products;
-DROP SEQUENCE IF EXISTS product_id_seq;
-create sequence product_id_seq start with 1 increment by 50;
-
-create table products
-(
-    id bigint default nextval('product_id_seq') not null,
-    code        text not null unique,
-    name        text not null,
-    description text,
-    image_url   text,
-    price       numeric not null,
-    primary key (id)
-);
-
 insert into products(code, name, description, image_url, price) values
 ('P100','The Hunger Games','Winning will make you famous. Losing means certain death...','https://images.gr-assets.com/books/1447303603l/2767052.jpg', 34.0),
 ('P101','To Kill a Mockingbird','The unforgettable novel of a childhood in a sleepy Southern town and the crisis of conscience that rocked it...','https://images.gr-assets.com/books/1361975680l/2657.jpg', 45.40),

@@ -1,6 +1,7 @@
 package com.es.cxp.domainservices.order;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Arrays;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -10,8 +11,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
 
 @Configuration
 @Component
@@ -85,7 +84,7 @@ public class RabbitMQConfig {
         Arrays.sort(beanNames);
         System.out.println("===============================================");
         for (String beanName : beanNames) {
-//            System.out.println(beanName);
+            //            System.out.println(beanName);
         }
         System.out.println("===============================================");
     }

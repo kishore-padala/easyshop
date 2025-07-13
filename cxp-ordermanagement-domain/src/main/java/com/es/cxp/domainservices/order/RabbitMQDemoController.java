@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RabbitMQDemoController {
     private final RabbitTemplate rabbitTemplate;
     private final ApplicationProperties properties;
+
     RabbitMQDemoController(RabbitTemplate rabbitTemplate, ApplicationProperties properties) {
         this.rabbitTemplate = rabbitTemplate;
         this.properties = properties;
@@ -21,4 +22,5 @@ public class RabbitMQDemoController {
 }
 
 record MyMessage(String routingKey, MyPayload payload) {}
+
 record MyPayload(String content) {}
