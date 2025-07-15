@@ -1,11 +1,13 @@
 package com.es.cxp.domainservices.order.web.controllers;
 
+import static com.es.cxp.domainservices.order.AbstractIT.mockGetProductByCode;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 import com.es.cxp.domainservices.order.testdata.TestDataFactory;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -68,6 +70,7 @@ class OrderControllerTests {
 
         @Test
         public void shouldCreateOrderSuccessfully() {
+            mockGetProductByCode("P100", "Product 1", new BigDecimal("25.50"));
             // Given a valid order request payload
             var payload =
                     """
