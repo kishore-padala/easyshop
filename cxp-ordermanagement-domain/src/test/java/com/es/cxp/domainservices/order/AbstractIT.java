@@ -32,7 +32,7 @@ public abstract class AbstractIT {
     @DynamicPropertySource
     static void configureProperties(org.springframework.test.context.DynamicPropertyRegistry registry) {
         // Configure WireMock server
-        registry.add("orders.catalog-service-url", wireMockServer::getBaseUrl);
+        registry.add("orders.catalog-domain-url", wireMockServer::getBaseUrl);
     }
 
     @BeforeEach

@@ -3,7 +3,7 @@ name: cxp-ordermanagement-domain
 on:
   push:
     #    paths:
-    #      - './cxp-catalog-domain/**'
+    #      - './cxp-ordermanagement-domain/**'
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
@@ -51,4 +51,4 @@ jobs:
         run: |
           ./mvnw spring-boot:build-image -DskipTests
           echo "Pushing the image $DOCKER_IMAGE_NAME to Docker Hub..."
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/easyshop-cxp-catalog-domain
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/easyshop-cxp-ordermanagement-domain

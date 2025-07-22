@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @ConfigurationProperties(prefix = "orders")
 public record ApplicationProperties(
-        String catalogServiceUrl,
+        String catalogDomainUrl,
         String orderEventsExchange,
         String newOrdersQueue,
         String deliveredOrdersQueue,

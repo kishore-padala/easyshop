@@ -14,16 +14,17 @@ import org.springframework.stereotype.Component;
 public class OrderValidator {
     private static final Logger log = LoggerFactory.getLogger(OrderValidator.class);
 
-    private final ProductServiceClient client;
+    private final ProductServiceClient productServiceClient;
 
-    OrderValidator(ProductServiceClient client) {
-        this.client = client;
+    OrderValidator(ProductServiceClient productServiceClient) {
+        this.productServiceClient = productServiceClient;
     }
 
     void validate(CreateOrderRequest request) {
         Set<OrderItem> items = request.items();
         for (OrderItem item : items) {
-            Product product = client.getProductByCode(item.code())
+            Product product = productServiceClient
+                    .getProductByCode(item.code())
                     .orElseThrow(() -> new InvalidOrderException("Product doesn't exist with code:" + item.code()));
             if (item.price().compareTo(product.price()) != 0) {
                 log.error(

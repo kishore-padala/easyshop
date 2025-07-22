@@ -8,6 +8,8 @@ services:
         - DB_URL=jdbc:postgresql://catalog-db:5432/postgres
         - DB_USERNAME=postgres
         - DB_PASSWORD=postgres
+        - JVM_OPTS=-Xmx2g -Xms2g -XX:MaxPermSize=1024m
+#        - CATALINA_OPTS=-Xmx12g -Xms12g -XX:MaxPermSize=1024m
       ports:
         - "8091:8091"
       restart: unless-stopped
@@ -17,4 +19,29 @@ services:
       deploy:
         resources:
           limits:
-            memory: 700m
+            memory: 2g
+    cxp-ordermanagement-domain:
+      image: kishore465/easyshop-cxp-ordermanagement-domain
+      container_name: cxp-ordermanagement-domain
+      environment:
+        - SPRING_PROFILES_ACTIVE=docker
+        - ORDERS_CATALOG_DOMAIN_URL=http://cxp-catalog-domain:8091
+        - DB_URL=jdbc:postgresql://orders-db:5432/postgres
+        - DB_USERNAME=postgres
+        - DB_PASSWORD=postgres
+        - RABBITMQ_HOST=easyshop-rabbitmq
+        - RABBITMQ_PORT=5672
+        - RABBITMQ_USERNAME=guest
+        - RABBITMQ_PASSWORD=guest
+        - JVM_OPTS=-Xmx2g -Xms2g -XX:MaxPermSize=1024m
+#        - CATALINA_OPTS=-Xmx2g -Xms2g -XX:MaxPermSize=1024m
+      ports:
+        - "8092:8092"
+      restart: unless-stopped
+      depends_on:
+        orders-db:
+          condition: service_healthy
+      deploy:
+        resources:
+          limits:
+            memory: 2g

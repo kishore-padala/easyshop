@@ -1,5 +1,6 @@
-package com.es.cxp.domainservices.order;
+package com.es.cxp.domainservices.order.config;
 
+import com.es.cxp.domainservices.order.ApplicationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
 import org.springframework.amqp.core.*;

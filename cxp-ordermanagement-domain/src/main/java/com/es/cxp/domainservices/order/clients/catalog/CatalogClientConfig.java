@@ -25,7 +25,7 @@ public class CatalogClientConfig {
             HttpComponentsClientHttpRequestFactory customHttpRequestFactory,
             ApplicationProperties applicationProperties) {
         return RestClient.builder()
-                .baseUrl(applicationProperties.catalogServiceUrl())
+                .baseUrl(applicationProperties.catalogDomainUrl())
                 .requestFactory(customHttpRequestFactory)
                 .build();
     }

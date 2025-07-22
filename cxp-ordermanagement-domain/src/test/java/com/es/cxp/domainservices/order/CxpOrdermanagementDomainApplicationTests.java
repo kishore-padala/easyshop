@@ -5,7 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
 @Import(ContainersConfig.class)
-@SpringBootTest
+@SpringBootTest(classes = com.es.cxp.domainservices.order.CxpOrdermanagementDomainApplication.class)
 class CxpOrdermanagementDomainApplicationTests {
 
     @Test

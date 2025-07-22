@@ -1,3 +1,4 @@
+
 create sequence order_id_seq start with 1 increment by 50;
 create sequence order_item_id_seq start with 1 increment by 50;
 

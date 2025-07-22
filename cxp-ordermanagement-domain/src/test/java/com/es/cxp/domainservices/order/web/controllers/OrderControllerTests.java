@@ -2,67 +2,87 @@ package com.es.cxp.domainservices.order.web.controllers;
 
 import static com.es.cxp.domainservices.order.AbstractIT.mockGetProductByCode;
 import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
+import com.es.cxp.domainservices.order.AbstractIT;
+import com.es.cxp.domainservices.order.model.OrderSummary;
 import com.es.cxp.domainservices.order.testdata.TestDataFactory;
-import io.restassured.RestAssured;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.WireMock;
+import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import java.math.BigDecimal;
-import org.junit.jupiter.api.BeforeEach;
+import java.util.List;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.containers.RabbitMQContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.springframework.test.context.jdbc.Sql;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Testcontainers
-class OrderControllerTests {
+@Sql("/test-orders.sql")
+class OrderControllerTests extends AbstractIT {
 
-    @LocalServerPort
-    private int port;
+    //    @LocalServerPort
+    //    private int port;
+    //
+    //    @Container
+    //    static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
+    //            .withDatabaseName("testdb")
+    //            .withUsername("testuser")
+    //            .withPassword("testpass");
+    //
+    //    @Container
+    //    static final RabbitMQContainer rabbit = new
+    // RabbitMQContainer("rabbitmq:3.12.11-alpine").withExposedPorts(5672);
+    //
+    //    @DynamicPropertySource
+    //    static void configureProperties(DynamicPropertyRegistry registry) {
+    //        // Configure database
+    //        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+    //        registry.add("spring.datasource.username", postgres::getUsername);
+    //        registry.add("spring.datasource.password", postgres::getPassword);
+    //        registry.add("spring.datasource.driver-class-name", () -> "org.postgresql.Driver");
+    //
+    //        // Configure RabbitMQ
+    //        registry.add("spring.rabbitmq.host", rabbit::getHost);
+    //        registry.add("spring.rabbitmq.port", rabbit::getAmqpPort);
+    //        registry.add("spring.rabbitmq.username", () -> "guest");
+    //        registry.add("spring.rabbitmq.password", () -> "guest");
+    //
+    //        // Disable Flyway for tests to avoid version conflicts
+    //        registry.add("spring.flyway.enabled", () -> "false");
+    //
+    //        // Configure H2 for testing if needed
+    //        // registry.add("spring.datasource.url", () ->
+    // "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+    //        // registry.add("spring.datasource.username", () -> "sa");
+    //        // registry.add("spring.datasource.password", () -> "");
+    //    }
+    //
+    //    @BeforeEach
+    //    void setup() {
+    //        RestAssured.port = port;
+    //    }
 
-    @Container
-    static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
-            .withDatabaseName("testdb")
-            .withUsername("testuser")
-            .withPassword("testpass");
+    WireMockServer wireMockServer;
 
-    @Container
-    static final RabbitMQContainer rabbit = new RabbitMQContainer("rabbitmq:3.12.11-alpine").withExposedPorts(5672);
+    //    @BeforeEach
+    //    void setUp() {
+    ////        wireMockServer = new WireMockServer(options().port(8888));
+    //        wireMockServer = new WireMockServer(
+    //                wireMockConfig()
+    //                        .bindAddress("localhost")
+    //                        .dynamicPort()
+    //        );
+    //        wireMockServer.start();
+    //    }
 
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        // Configure database
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-        registry.add("spring.datasource.driver-class-name", () -> "org.postgresql.Driver");
-
-        // Configure RabbitMQ
-        registry.add("spring.rabbitmq.host", rabbit::getHost);
-        registry.add("spring.rabbitmq.port", rabbit::getAmqpPort);
-        registry.add("spring.rabbitmq.username", () -> "guest");
-        registry.add("spring.rabbitmq.password", () -> "guest");
-
-        // Disable Flyway for tests to avoid version conflicts
-        registry.add("spring.flyway.enabled", () -> "false");
-
-        // Configure H2 for testing if needed
-        // registry.add("spring.datasource.url", () -> "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
-        // registry.add("spring.datasource.username", () -> "sa");
-        // registry.add("spring.datasource.password", () -> "");
-    }
-
-    @BeforeEach
-    void setUp() {
-        RestAssured.port = port;
+    @BeforeAll
+    static void startWiremock() {
+        ESWireMockServer.start();
+        WireMock.configureFor("localhost", ESWireMockServer.httpPort());
     }
 
     @Nested
@@ -101,7 +121,7 @@ class OrderControllerTests {
             given().contentType(ContentType.JSON)
                     .body(payload)
                     .when()
-                    .post("/api/orders")
+                    .post("/api/orders/createOrder")
                     .then()
                     .statusCode(HttpStatus.CREATED.value())
                     .body("orderNumber", notNullValue());
@@ -113,9 +133,42 @@ class OrderControllerTests {
             given().contentType(ContentType.JSON)
                     .body(payload)
                     .when()
-                    .post("/api/orders")
+                    .post("/api/orders/createOrder")
                     .then()
                     .statusCode(HttpStatus.BAD_REQUEST.value());
+        }
+    }
+
+    @Nested
+    class GetOrdersTests {
+        @Test
+        void shouldGetOrdersSuccessfully() {
+            List<OrderSummary> orderSummaries = given().when()
+                    //                    .header("Authorization", "Bearer " + getToken())
+                    .get("/api/orders")
+                    .then()
+                    .statusCode(200)
+                    .extract()
+                    .body()
+                    .as(new TypeRef<>() {});
+
+            assertThat(orderSummaries).hasSize(2);
+        }
+    }
+
+    @Nested
+    class GetOrderByOrderNumberTests {
+        String orderNumber = "order-123";
+
+        @Test
+        void shouldGetOrderSuccessfully() {
+            given().when()
+                    //                    .header("Authorization", "Bearer " + getToken())
+                    .get("/api/orders/{orderNumber}", orderNumber)
+                    .then()
+                    .statusCode(200)
+                    .body("orderNumber", is(orderNumber))
+                    .body("items.size()", is(2));
         }
     }
 }

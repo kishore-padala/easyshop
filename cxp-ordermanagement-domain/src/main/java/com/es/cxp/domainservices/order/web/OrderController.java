@@ -1,10 +1,11 @@
 package com.es.cxp.domainservices.order.web;
 
-import com.es.cxp.domainservices.order.model.CreateOrderRequest;
-import com.es.cxp.domainservices.order.model.CreateOrderResponse;
+import com.es.cxp.domainservices.order.exception.OrderNotFoundException;
+import com.es.cxp.domainservices.order.model.*;
 import com.es.cxp.domainservices.order.service.OrderService;
 import com.es.cxp.domainservices.order.service.SecurityService;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -30,5 +31,21 @@ public class OrderController {
         String loginUserName = securityService.getLoginUserName();
         log.info("Creating order for user: {}", loginUserName);
         return orderService.createOrder(loginUserName, request);
+    }
+
+    @GetMapping
+    public List<OrderSummary> getOrders() {
+        String loginUserName = securityService.getLoginUserName();
+        log.info("Fetching orders for user: {}", loginUserName);
+        return orderService.findOrders(loginUserName);
+    }
+
+    @GetMapping("/{orderNumber}")
+    OrderDTO getOrder(@PathVariable(value = "orderNumber") String orderNumber) {
+        String loginUserName = securityService.getLoginUserName();
+        log.info("Fetching order by orderNumber: {} for user: {}", orderNumber, loginUserName);
+        return orderService
+                .findUserOrder(loginUserName, orderNumber)
+                .orElseThrow(() -> new OrderNotFoundException("Order not found for orderNumber: " + orderNumber));
     }
 }
