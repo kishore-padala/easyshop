@@ -1,0 +1,54 @@
+name: cxp-notification-domain
+
+on:
+  push:
+    #    paths:
+    #      - './cxp-notification-domain/**'
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./cxp-notification-domain
+      DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/cxp-notification-domain
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Extract Docker image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ vars.DOCKER_USERNAME }}/cxp-notification-domain
+      - name: Make Maven wrapper executable
+        run: chmod +x mvnw
+
+      - name: Build with Maven
+        run: ./mvnw -ntp verify
+
+      - if: ${{ github.ref == 'refs/heads/main' }}
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - if: ${{ github.ref == 'refs/heads/main' }}
+        name: Build and Publish Docker Image
+        run: |
+          ./mvnw spring-boot:build-image -DskipTests
+          echo "Pushing the image $DOCKER_IMAGE_NAME to Docker Hub..."
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/easyshop-cxp-notification-domain

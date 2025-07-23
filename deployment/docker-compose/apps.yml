@@ -45,3 +45,33 @@ services:
         resources:
           limits:
             memory: 2g
+    cxp-notification-domain:
+      image: kishore465/easyshop-cxp-notification-domain
+      container_name: cxp-notification-domain
+      environment:
+        - SPRING_PROFILES_ACTIVE=docker
+        - DB_URL=jdbc:postgresql://notifications-db:5432/postgres
+        - DB_USERNAME=postgres
+        - DB_PASSWORD=postgres
+        - RABBITMQ_HOST=easyshop-rabbitmq
+        - RABBITMQ_PORT=5672
+        - RABBITMQ_USERNAME=guest
+        - RABBITMQ_PASSWORD=guest
+        - MAIL_HOST=mailhog
+        - MAIL_PORT=1025
+        - JVM_OPTS=-Xmx2g -Xms2g -XX:MaxPermSize=1024m
+      #        - CATALINA_OPTS=-Xmx2g -Xms2g -XX:MaxPermSize=1024m
+      ports:
+        - "8093:8093"
+      restart: unless-stopped
+      depends_on:
+        notifications-db:
+          condition: service_healthy
+        easyshop-rabbitmq:
+          condition: service_healthy
+        mailhog:
+          condition: service_started
+      deploy:
+        resources:
+          limits:
+            memory: 2g
