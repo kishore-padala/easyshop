@@ -25,7 +25,7 @@ services:
       container_name: cxp-ordermanagement-domain
       environment:
         - SPRING_PROFILES_ACTIVE=docker
-        - ORDERS_CATALOG_DOMAIN_URL=http://cxp-catalog-domain:8091
+        - ORDERS_CATALOG_DOMAIN_URL=http://api-gateway:8989/catalog
         - DB_URL=jdbc:postgresql://orders-db:5432/postgres
         - DB_USERNAME=postgres
         - DB_PASSWORD=postgres
@@ -75,3 +75,21 @@ services:
         resources:
           limits:
             memory: 2g
+    api-gateway:
+      image: kishore465/easyshop-api-gateway
+      container_name: api-gateway
+      environment:
+        - SPRING_PROFILES_ACTIVE=docker
+        - CATALOG_SERVICE_URL=http://cxp-catalog-domain:8091
+        - ORDER_SERVICE_URL=http://cxp-ordermanagement-domain:8092
+#        - MANAGEMENT_TRACING_ENABLED=${MANAGEMENT_TRACING_ENABLED}
+#        - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
+      ports:
+        - "8989:8989"
+      restart: unless-stopped
+      deploy:
+        resources:
+          limits:
+            memory: 700m
+      labels:
+        logging: "promtail"

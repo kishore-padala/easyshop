@@ -25,6 +25,7 @@
   <module>cxp-catalog-domain</module>
   <module>cxp-ordermanagement-domain</module>
   <module>cxp-notification-domain</module>
+  <module>api-gateway</module>
 </modules>
 <!--  <dependencyManagement>-->
 <!--    <dependencies>-->
