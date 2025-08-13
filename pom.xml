@@ -26,6 +26,7 @@
   <module>cxp-ordermanagement-domain</module>
   <module>cxp-notification-domain</module>
   <module>api-gateway</module>
+  <module>easyshop-webapp</module>
 </modules>
 <!--  <dependencyManagement>-->
 <!--    <dependencies>-->
