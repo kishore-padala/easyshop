@@ -31,6 +31,7 @@ class OrderController {
 
     @GetMapping("/cart")
     String cart() {
+        log.info("Cart endpoint called");
         return "cart";
     }
 
@@ -43,6 +44,7 @@ class OrderController {
 
     @GetMapping("/orders/{orderNumber}")
     String showOrderDetails(@PathVariable String orderNumber, Model model) {
+        log.info("Fetching order details for orderNumber: {}", orderNumber);
         model.addAttribute("orderNumber", orderNumber);
         return "order_details";
     }
@@ -56,13 +58,14 @@ class OrderController {
 
     @GetMapping("/orders")
     String showOrders() {
+        log.info("Order endpoint called");
         return "orders";
     }
 
     @GetMapping("/api/orders")
     @ResponseBody
     List<OrderSummary> getOrders() {
-        log.info("Fetching orders");
+        log.info("Fetching All orders");
         return orderServiceClient.getOrders(getHeaders());
     }
 
